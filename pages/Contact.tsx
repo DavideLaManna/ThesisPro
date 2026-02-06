@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Mail, Phone, MapPin, Send, CheckCircle2 } from 'lucide-react';
+import { Mail, Phone, MapPin, Send, CheckCircle2, Loader2, AlertCircle } from 'lucide-react';
 
 const Contact: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -11,12 +11,38 @@ const Contact: React.FC = () => {
     request: ''
   });
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Simulate API call
-    console.log('Form submitted:', formData);
-    setSubmitted(true);
+    setLoading(true);
+    setError(false);
+    try {
+      const response = await fetch('https://formsubmit.co/ajax/info@thesispro.it', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          Nome: formData.name,
+          Cognome: formData.surname,
+          Telefono: formData.phone,
+          Email: formData.email,
+          Richiesta: formData.request,
+          _subject: 'Nuova richiesta da ThesisPro',
+        })
+      });
+      if (response.ok) {
+        setSubmitted(true);
+      } else {
+        setError(true);
+      }
+    } catch {
+      setError(true);
+    }
+    setLoading(false);
   };
 
   if (submitted) {
@@ -53,7 +79,7 @@ const Contact: React.FC = () => {
                 </div>
                 <div>
                   <h3 className="font-bold text-slate-900">Telefono</h3>
-                  <p className="text-slate-600">+39 012 345 6789</p>
+                  <p className="text-slate-600">+39 333 146 9458</p>
                 </div>
               </div>
               <div className="flex items-center space-x-4">
@@ -136,11 +162,23 @@ const Contact: React.FC = () => {
                 />
               </div>
 
+              {error && (
+                <div className="flex items-center space-x-2 text-red-600 bg-red-50 p-4 rounded-xl">
+                  <AlertCircle className="h-5 w-5 flex-shrink-0" />
+                  <p className="text-sm">Si è verificato un errore. Riprova o contattaci via WhatsApp.</p>
+                </div>
+              )}
+
               <button
                 type="submit"
-                className="w-full bg-blue-700 text-white py-4 rounded-xl font-bold text-lg hover:bg-blue-800 transition-all flex items-center justify-center"
+                disabled={loading}
+                className="w-full bg-blue-700 text-white py-4 rounded-xl font-bold text-lg hover:bg-blue-800 transition-all flex items-center justify-center disabled:opacity-50"
               >
-                Invia Messaggio <Send className="ml-2 h-5 w-5" />
+                {loading ? (
+                  <><Loader2 className="animate-spin mr-2 h-5 w-5" /> Invio in corso...</>
+                ) : (
+                  <>Invia Messaggio <Send className="ml-2 h-5 w-5" /></>
+                )}
               </button>
             </form>
           </div>

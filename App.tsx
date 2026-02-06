@@ -6,6 +6,9 @@ import Home from './pages/Home';
 import Services from './pages/Services';
 import SecondaryServices from './pages/SecondaryServices';
 import Contact from './pages/Contact';
+import Privacy from './pages/Privacy';
+import Terms from './pages/Terms';
+import AntiplagioPolicy from './pages/AntiplagioPolicy';
 import WhatsAppButton from './components/WhatsAppButton';
 import { GraduationCap } from 'lucide-react';
 
@@ -34,14 +37,14 @@ const Footer: React.FC = () => (
         <div>
           <h4 className="text-white font-bold mb-6">Legale</h4>
           <ul className="space-y-4">
-            <li><a href="#" className="hover:text-white transition-colors">Privacy Policy</a></li>
-            <li><a href="#" className="hover:text-white transition-colors">Termini e Condizioni</a></li>
-            <li><a href="#" className="hover:text-white transition-colors">Policy Antiplagio</a></li>
+            <li><a href="#/privacy" className="hover:text-white transition-colors">Privacy Policy</a></li>
+            <li><a href="#/termini" className="hover:text-white transition-colors">Termini e Condizioni</a></li>
+            <li><a href="#/antiplagio" className="hover:text-white transition-colors">Policy Antiplagio</a></li>
           </ul>
         </div>
       </div>
       <div className="pt-8 border-t border-slate-800 text-sm flex flex-col md:flex-row justify-between items-center">
-        <p>© 2024 ThesisPro - P.IVA 01234567890. Tutti i diritti riservati.</p>
+        <p>&copy; {new Date().getFullYear()} ThesisPro - P.IVA 02152530859. Tutti i diritti riservati.</p>
         <p className="mt-4 md:mt-0 italic">Eccellenza Accademica al tuo servizio.</p>
       </div>
     </div>
@@ -58,6 +61,9 @@ const App: React.FC = () => {
           <Route path="/servizi" element={<Services />} />
           <Route path="/altri-servizi" element={<SecondaryServices />} />
           <Route path="/contatto" element={<Contact />} />
+          <Route path="/privacy" element={<Privacy />} />
+          <Route path="/termini" element={<Terms />} />
+          <Route path="/antiplagio" element={<AntiplagioPolicy />} />
         </Routes>
       </main>
       <Footer />
